@@ -46,7 +46,6 @@ public class AuthService {
         Optional<AuthResponse> credentialsAreUniqueResponse = credentialsAreUnique(request);
 
         if (credentialsAreUniqueResponse.isPresent()) {
-            log.info("is present");
             return credentialsAreUniqueResponse.get();
         }
 
@@ -67,8 +66,6 @@ public class AuthService {
                             request.getPassword()
                     )
             );
-
-            log.info("passed authentification");
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();

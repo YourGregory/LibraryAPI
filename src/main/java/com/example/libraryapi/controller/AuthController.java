@@ -34,7 +34,6 @@ public class AuthController {
 
     @GetMapping("sign-in")
     public ResponseEntity<JwtAuthenticationResponse> loginUser(@Valid @RequestBody LoginRequest request) {
-        log.info("entered controller");
         return ResponseEntity.ok(authService.loginUser(request));
     }
 }
