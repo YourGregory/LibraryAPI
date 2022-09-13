@@ -23,16 +23,12 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "author")
-public class Author {
+public class Author extends CommonIdentifierFieldEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long authorId;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String fullName;
 
     @Column(nullable = false)

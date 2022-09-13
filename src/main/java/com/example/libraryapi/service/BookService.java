@@ -12,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,16 +40,22 @@ public class BookService {
 
     @Transactional
     public BookResponse saveBook(CreateBookRequest createBookRequest) {
-        Author author = authorService.manageAuthor(createBookRequest.getAuthorRequest());
+        Author author = authorService.findAuthorById(createBookRequest.getAuthorId());
+        log.info(author.getId());
         Book book = bookMapper.toBook(createBookRequest);
         book.setAuthor(author);
-        return bookMapper.toBookResponse(bookRepository.save(book));
+        Book createdBook = bookRepository.save(book);
+        return bookMapper.toBookResponse(createdBook);
     }
 
     public BookResponse updateBook(Long id, UpdateBookRequest updateBookRequest) {
         Book book = findBookById(id);
         Author author = authorService.findAuthorById(updateBookRequest.getAuthorId());
-        book.setAuthor(author);
-        return bookMapper.toBookResponse(bookRepository.save(bookMapper.updateBook(book, updateBookRequest)));
+        if (!author.getId().equals(book.getId())) {
+            book.setAuthor(author);
+        }
+        bookMapper.updateBook(book, updateBookRequest);
+        Book createdBook = bookRepository.save(book);
+        return bookMapper.toBookResponse(createdBook);
     }
 }

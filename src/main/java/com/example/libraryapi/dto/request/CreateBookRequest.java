@@ -23,6 +23,6 @@ public class CreateBookRequest {
 
     String description;
 
-    @NotNull(message = "Author cannot be null")
-    AuthorRequest authorRequest;
+    @NotNull(message = "Author ID cannot be null")
+    Long authorId;
 }

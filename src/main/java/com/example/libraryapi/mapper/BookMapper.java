@@ -20,5 +20,5 @@ public interface BookMapper {
 
     Book toBook(CreateBookRequest createBookRequest);
 
-    Book updateBook(@MappingTarget Book book, UpdateBookRequest updateBookRequest);
+    void updateBook(@MappingTarget Book book, UpdateBookRequest updateBookRequest);
 }

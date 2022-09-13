@@ -9,13 +9,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Log4j2
+@Slf4j
 public class AuthorService {
 
     AuthorRepository authorRepository;
@@ -38,22 +39,5 @@ public class AuthorService {
         Author author = findAuthorById(id);
         author = authorMapper.toAuthor(authorRequest);
         return authorRepository.save(author);
-    }
-
-    @Transactional
-    public Author manageAuthor(AuthorRequest authorRequest) {
-        Author author;
-        log.info(authorRequest.getFullName());
-        if (authorRepository.existsByFullName(authorRequest.getFullName())) {
-            log.info("Author exists");
-            author = updateAuthor(
-                    authorRepository
-                            .getAuthorIdByAuthorFullName(authorRequest.getFullName()),
-                    authorRequest);
-        } else {
-            log.info("Author does not exist");
-            author = createAuthor(authorRequest);
-        }
-        return author;
     }
 }
