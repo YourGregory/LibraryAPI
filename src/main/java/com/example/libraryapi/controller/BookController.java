@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,7 +28,9 @@ public class BookController {
     BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<BookResponse>> getAllBooks() { return ResponseEntity.ok(bookService.getAllBooks()); }
+    public ResponseEntity<List<BookResponse>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
+    }
 
     @PostMapping
     public ResponseEntity<BookResponse> createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
@@ -39,7 +39,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> updateBook(@PathVariable Long id,
-                                           @Valid @RequestBody UpdateBookRequest request) {
+                                                   @Valid @RequestBody UpdateBookRequest request) {
         return ResponseEntity.ok(bookService.updateBook(id, request));
     }
 }

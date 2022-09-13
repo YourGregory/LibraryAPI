@@ -33,11 +33,4 @@ public class AuthorService {
         return authorRepository.findById(authorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: ", authorId));
     }
-
-    @Transactional
-    public Author updateAuthor(Long id, AuthorRequest authorRequest) {
-        Author author = findAuthorById(id);
-        author = authorMapper.toAuthor(authorRequest);
-        return authorRepository.save(author);
-    }
 }

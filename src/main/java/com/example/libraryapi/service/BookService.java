@@ -35,13 +35,12 @@ public class BookService {
     @Transactional(readOnly = true)
     public Book findBookById(Long bookId) {
         return bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book", bookId));
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: ", bookId));
     }
 
     @Transactional
     public BookResponse saveBook(CreateBookRequest createBookRequest) {
         Author author = authorService.findAuthorById(createBookRequest.getAuthorId());
-        log.info(author.getId());
         Book book = bookMapper.toBook(createBookRequest);
         book.setAuthor(author);
         Book createdBook = bookRepository.save(book);
@@ -50,8 +49,8 @@ public class BookService {
 
     public BookResponse updateBook(Long id, UpdateBookRequest updateBookRequest) {
         Book book = findBookById(id);
-        Author author = authorService.findAuthorById(updateBookRequest.getAuthorId());
-        if (!author.getId().equals(book.getId())) {
+        if (!updateBookRequest.getAuthorId().equals(book.getAuthor().getId())) {
+            Author author = authorService.findAuthorById(updateBookRequest.getAuthorId());
             book.setAuthor(author);
         }
         bookMapper.updateBook(book, updateBookRequest);
