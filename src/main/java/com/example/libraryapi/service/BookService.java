@@ -44,6 +44,7 @@ public class BookService {
         Book book = bookMapper.toBook(createBookRequest);
         book.setAuthor(author);
         Book createdBook = bookRepository.save(book);
+
         return bookMapper.toBookResponse(createdBook);
     }
 
@@ -55,6 +56,7 @@ public class BookService {
         }
         bookMapper.updateBook(book, updateBookRequest);
         Book createdBook = bookRepository.save(book);
+
         return bookMapper.toBookResponse(createdBook);
     }
 }

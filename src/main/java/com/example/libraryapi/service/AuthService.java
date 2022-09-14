@@ -52,6 +52,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         authRepository.save(user);
+
         return AuthResponse.successfulRegisterResponse();
     }
 
@@ -85,6 +86,7 @@ public class AuthService {
         } else if (existsByUsername(request.getUsername())) {
             return Optional.of(AuthResponse.usernameAlreadyTakenResponse());
         }
+
         return Optional.empty();
     }
 
