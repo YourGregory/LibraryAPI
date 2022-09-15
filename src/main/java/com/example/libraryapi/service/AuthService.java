@@ -4,12 +4,12 @@ import com.example.libraryapi.config.PropertiesConfig;
 import com.example.libraryapi.dictionary.Role;
 import com.example.libraryapi.dto.request.LoginRequest;
 import com.example.libraryapi.dto.request.RegisterRequest;
+import com.example.libraryapi.dto.response.AuthResponse;
 import com.example.libraryapi.dto.security.JwtAuthenticationResponse;
 import com.example.libraryapi.dto.security.UserPrincipal;
 import com.example.libraryapi.mapper.UserMapper;
 import com.example.libraryapi.model.User;
 import com.example.libraryapi.repository.AuthRepository;
-import com.example.libraryapi.dto.response.AuthResponse;
 import com.example.libraryapi.security.JwtTokenProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +41,6 @@ public class AuthService {
 
     @Transactional
     public AuthResponse registerUser(@Valid RegisterRequest request) {
-
-        log.info(request.getUsername());
         Optional<AuthResponse> credentialsAreUniqueResponse = credentialsAreUnique(request);
 
         if (credentialsAreUniqueResponse.isPresent()) {
@@ -54,6 +52,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         authRepository.save(user);
+
         return AuthResponse.successfulRegisterResponse();
     }
 
@@ -74,9 +73,6 @@ public class AuthService {
             String accessToken = tokenProvider.getAccessToken(authentication);
             String refreshToken = tokenProvider.getRefreshToken(authentication);
 
-            log.info(accessToken);
-            log.info(refreshToken);
-
             return new JwtAuthenticationResponse(accessToken, refreshToken, userId, "");
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -90,6 +86,7 @@ public class AuthService {
         } else if (existsByUsername(request.getUsername())) {
             return Optional.of(AuthResponse.usernameAlreadyTakenResponse());
         }
+
         return Optional.empty();
     }
 

@@ -19,9 +19,9 @@ public class ApiHostConfig {
                 .of(
                         HttpMethod.PATCH,
                         HttpMethod.GET,
+                        HttpMethod.PUT,
                         HttpMethod.POST,
-                        HttpMethod.DELETE,
-                        HttpMethod.PUT
+                        HttpMethod.DELETE
                 )
                 .map(HttpMethod::name)
                 .toArray(String[]::new);
